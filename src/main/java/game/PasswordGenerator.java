@@ -3,9 +3,11 @@ package game;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.util.Random;
 
 public class PasswordGenerator {
@@ -24,6 +26,8 @@ public class PasswordGenerator {
     private JRadioButton asciiButton;
     private JTextField exclusionTextField;
     private JTextField passwordLengthTextBox;
+    private JButton copyPasswordButton;
+    private JLabel copiedToClipboardLabel;
     private String passwordLength = passwordLengthLabel.getText();
     private String regex ="0";
     private String password ="";
@@ -35,6 +39,7 @@ public class PasswordGenerator {
         passwordLengthTextBox.setText(String.valueOf(slider1.getValue()));
         passwordLabel.setContentType("text/html");
         passwordLabel.setEditable(false);
+        copiedToClipboardLabel.setVisible(false);
         digitsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,7 +105,33 @@ public class PasswordGenerator {
                 mainPassowrd.repaint();
             }
         });
+        copyPasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String passwordClipboard = password.replaceAll("<br/>","");
+                passwordClipboard = passwordClipboard.replaceAll("<h3>", "");
+                passwordClipboard = passwordClipboard.replaceAll("</h3>", "");
+                StringSelection stringSelection = new StringSelection(passwordClipboard);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
+                copiedToClipboardLabel.setVisible(true);
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            Thread.sleep(1000); //Sleep for 1 second
+                        } catch (InterruptedException e) {}
+                        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                copiedToClipboardLabel.setVisible(false);
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
     }
+
     private String passwordFormatterAndGenerator(String regex, int length){
         if(length==0) return "";
         Random random = new Random();

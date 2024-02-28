@@ -26,10 +26,10 @@ public class Main {
 //        selectionMenu.pack();
 //        selectionMenu.setVisible(true);
         JPanel selectionMenu = new SelectMenu().selectMenu;
-        JFrame passwordGenerator = jFrameHelper.jFrameCreator("Selection Menu",
+        JFrame selecttionMenuFrame = jFrameHelper.jFrameCreator("Selection Menu",
                 selectionMenu);
-        passwordGenerator.pack();
-        passwordGenerator.setVisible(true);
+        selecttionMenuFrame.pack();
+        selecttionMenuFrame.setVisible(true);
 
     }
 }
