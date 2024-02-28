@@ -137,7 +137,7 @@ public class PasswordGenerator {
         Random random = new Random();
         StringBuilder sb = new StringBuilder(regex);
         sb.insert(0,"[");
-        sb.append("&&[^\\p{Cntrl}]&&[^\r\n\t]&&[^<br>]&&[^<B>]&&[^<I>]");
+        sb.append("&&[^\\p{Cntrl}]&&[^\r\n\t]&&[^(^<br>$&&^<B>$&&^<I>$)]");
         sb.append("]");
         regex = sb.toString();
         String randomString = "";
